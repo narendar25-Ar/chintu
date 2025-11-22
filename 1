@@ -1,0 +1,256 @@
+5.boardcast//
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX_NODES 20
+#define INFINITY 1000
+void run_prim(int i,int num_nodes,int *hops);
+int dist[MAX_NODES][MAX_NODES];
+int path[MAX_NODES][MAX_NODES];
+int main()
+{
+int num_nodes=0;
+int i=0,j=0;
+int path_len,hops[MAX_NODES];
+printf("enter the number of nodes:");
+scanf("%d",&num_nodes);
+fflush(stdin);
+printf("enter the connection matrix, 0 if not connected\n");
+printf("otherwise,the distance\n");
+for(;i<num_nodes;i++)
+{
+printf("enter the distances for node num:%d\n",i);
+for(j=0;j<num_nodes;j++)
+{
+if(i==j)
+{
+}
+dist[i][j]=0;
+continue;
+printf("distance from %d to %d= ",i,j);
+scanf("%d",&dist[i][j]);
+fflush(stdin);
+if(dist[i][j]==0)
+dist[i][j]=INFINITY;
+}
+}
+printf("\nenter the root node");
+scanf("%d",&i);
+run_prim(i,num_nodes,hops);
+for(j=0;j<num_nodes;j++)
+{
+for(i=0;i<hops[j];i++)
+printf("->%d",path[j][i]);
+printf("\n");
+}
+return 0;
+}
+void run_prim(int s,int n,int *hops)
+{
+struct state
+{
+int prev;
+int length;
+enum {perm,tent} label;
+}
+state[MAX_NODES];
+int i,j,k,min;
+int count=0;
+struct state *p;
+for(p=&state[0];p<&state[n];p++)
+{
+p->prev= -1;
+p->length= INFINITY;
+p->label= tent;
+}
+state[s].length= 0;state[s].label= perm;
+k=s;
+do
+{
+for(i=0;i<n;i++)
+if(dist[k][i]!=0&&state[i].label==tent)
+{
+if(state[k].length+dist[k][i]<state[i].length)
+{
+state[i].prev=k;
+state[i].length=state[k].length+dist[k][i];
+}
+k=0;
+}
+min=INFINITY;
+for(i=0;i<n;i++)
+if(state[i].label==tent&&state[i].length<min)
+{
+min=state[i].length;
+k=i;
+}
+state[k].label=perm;
+count++;
+}while(count<n);
+for(j=0;j<n;j++)
+{
+i=0;k=j;
+do
+{
+path[j][i++]=k;
+k=state[k].prev;
+}
+while(k>=0);
+hops[j]=i;
+}
+}
+3 crc //
+#include <stdio.h> 
+#include <string.h> 
+#define N strlen(g) 
+char t[28],cs[28],g[28]; 
+int a,e,c,b; 
+void xor() 
+{ 
+} 
+for(c=1;c<N;c++) 
+void crc() 
+{ 
+cs[c]=((cs[c]==g[c])?'0':'1'); 
+for(e=0;e<N;e++) 
+cs[e]=t[e]; 
+do 
+{ 
+} 
+if(cs[0]=='1') 
+xor(); 
+for(c=0;c<N-1;c++) 
+cs[c]=cs[c+1]; 
+cs[c]=t[e++]; 
+while(e<=a+N-1); 
+} 
+int main() 
+{ 
+int flag=0; 
+do{ 
+printf("\n1.crc12\n2.crc16\n crc ccip\n4.exit\n\n Enter your option."); 
+scanf("%d",&b); 
+switch(b) 
+{ 
+} 
+case 1:strcpy(g,"1100000001111"); 
+break; 
+case 2: strcpy(g,"11000000000000101"); 
+break; 
+case 3:strcpy (g,"10001000000100001"); 
+break; 
+case 4:return 0; 
+printf("\n enter data:"); 
+scanf("%s",t); 
+printf("\n 
+\n"); 
+printf("\n generating polynomial:%s",g); 
+a=strlen(t); 
+for(e=a;e<a+N-1;e++) 
+t[e]='0'; 
+\n"); 
+printf("\n  
+printf("mod-ified data is:%s",t); 
+printf("\n 
+\n"); 
+crc(); 
+printf("checksum is:%s",cs); 
+for(e=a;e<a+N-1;e++) 
+t[e]=cs[e-a]; 
+printf("\n 
+\n"); 
+printf("\n final codeword is : %s",t); 
+printf("\n  
+\n"); 
+printf("\ntest error detection 0(yes) 1(no)?:"); 
+scanf("%d",&e); 
+if(e==0) 
+{ 
+do{ 
+} 
+printf("\n\tenter the position where error is to be inserted:"); 
+scanf("%d",&e); 
+while(e==0||e>a+N-1); 
+t[e-1]=(t[e-1]=='0')?'1':'0'; 
+printf("\n 
+\n"); 
+printf("\n\terroneous data:%s\n",t); 
+} 
+crc(); 
+for(e=0;(e<N-1)&&(cs[e]!='1');e++); 
+if(e<N-1) 
+printf ("error detected\n\n"); 
+else 
+printf ("\n no error detected \n\n"); 
+printf("\n 
+"); 
+}while(flag!=1); 
+} 
+Output: 
+1.crc12 
+2.crc16 
+3.crc ccit 
+4.exit 
+Enter your option.1 
+enter data: 1100110011100011 - 
+generating polynomial: 1100000001111 
+mod-ified data is: 1100110011100011000000000000 - 
+checksum is: 110111011000 - 
+final codeword is: 1100110011100011110111011000 
+test error detection 0(yes) 1(no)?:1 
+no error detected - 
+1. crc12 
+2. crc16 
+3. crc ccit 
+4. exit 
+Enter your option.2 
+enter data: 11001100111000 - 
+generating polynomial: 11000000000000101 
+Mod-ified data is: 110011001110000000000000000000 
+Checksum is: 11111111110110000 -- 
+final codeword is: 110011001110001111111111011000000000000000101 
+Test error detection 0(yes) 1(no)?:1 
+No error detected - 
+1.crc12 
+2.crc16 
+3.crc ccit 
+4.exit 
+Enter your option.3 
+enter data:11001100111000 
+ 
+  - 
+ 
+generating polynomial:10001000000100001 
+ 
+ 
+mod-ified data is:11001100111000000000000000000 
+ 
+  - 
+ 
+checksum is:11100111100111010 
+ 
+  - 
+ 
+final codeword is : 1100110011100011100111100111010 
+ 
+ 
+test error detection 0(yes) 1(no)?:0 
+ 
+Enter the position where error is to be inserted:3 
+ 
+  - 
+ 
+erroneous data:111011001110001110011110011101001000000100001 
+ 
+error detected 
+ 
+  - 
+ 
+1. crc12 
+ 
+2. crc16 
+ 
+3. crc ccit 
+ 
+4. exit 
+ 
+Enter your option.4
